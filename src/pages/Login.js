@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from 'react-router-dom';
 
-import { useAuth } from '../context/auth';
+import { authTokens, useAuth } from '../context/auth';
 import {
   TextField,
   Button,
@@ -16,7 +16,6 @@ function Login(props) {
   const [isError, setIsError] = useState(false);
   const { setAuthTokens } = useAuth();
   const referer = props.location.state.referer || "/"
-
 
   if (isLoggedIn) {
     return <Redirect to={referer} />;
@@ -39,8 +38,9 @@ function Login(props) {
       }).then(result => {
         if (result.status === 200) {
           setAuthTokens(result.data);
-          console.log(result);
-          console.log(result.data);
+          console.log(localStorage.getItem('tokens'));
+          // console.log(result);
+          // console.log(result.data);
           setLoggedIn(true);
         } else {
           setIsError(true);
