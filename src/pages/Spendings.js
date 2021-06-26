@@ -17,10 +17,14 @@ import {
   FormControl,
   FormLabel,
   Radio,
+  Dialog,
+  Container
 } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import SpendingForm from "./SpendingForm";
+import SpendingEditPopUp from "./SpendingPopUp";
 
 const useStyles = makeStyles({
   table: {
@@ -34,10 +38,23 @@ function Spendings(props) {
   const [ token, setToken] = useState(
     localStorage.getItem('token')
   );
+  const [ spendingId, setSpendingId ] = useState(null);
 
   const [spendings, setSpendings] = useState([]);
   const [count, setCount ] = useState(0);
   const { handleSubmit, control } = useForm();
+
+  const [open, setOpen ] = useState(false);
+
+  const handleOpen = (e) => {
+    setSpendingId(e.currentTarget.value);
+    console.log(spendingId);
+    setOpen(true)
+  };
+    
+  const handleClose= () => {
+    setOpen(false)
+  };
 
   const categories = [
     { value: 'Clothes', id: 1 },
@@ -48,8 +65,7 @@ function Spendings(props) {
     { value: 'Other', id: 6 },
   ];
 
-  const onSubmit = values => {
-        console.log(values);
+  const onSubmit = (values) => {
         axios.post("http://localhost:3001/api/spendings", {
         spending: {
         description: values.description,
@@ -62,9 +78,7 @@ function Spendings(props) {
       }
       ).then(result => {
         if (result.status === 200) {
-          console.log(categories);
           setCount(count + 1);
-          console.log(result);
         } else {
           setIsError(true);
           console.log(isError);
@@ -108,7 +122,6 @@ function Spendings(props) {
     const fetchSortedSpendings = async () => {
       const result = await axios.get("http://localhost:3001/api/spendings", 
       config)
-      // console.log(result.data.spendings);
       setSpendings(result.data.spendings);
     };
     fetchSortedSpendings();
@@ -135,69 +148,12 @@ function Spendings(props) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="description"
-          control={control}
-          defaultValue=''
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <TextField 
-              label="Description"
-              variant="outlined"
-              value={value}
-              onChange={onChange}
-              error={!!error}
-              helperText={error ? error.message: null}
-            />
-          )}
-          rules={{ required: "Please, enter a description"}}
-        />
-        <Controller 
-          name="amount"
-          control={control}
-          defaultValue=""
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <TextField 
-              label="Amount"
-              variant="outlined"
-              value={value}
-              onChange={onChange}
-              error={!!error}
-              helperText={error ? error.message: null}
-            />
-          )}
-          rules={{ required: "Please, enter an amount" }}
-        />
-        <Controller 
-          name="category_id"
-          control={control}
-          defaultValue=""
-          options={categories}
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
-            <TextField 
-              select
-              label="Category"
-              variant="outlined"
-              value={value}
-              onChange={onChange}
-              error={!!error}
-              helperText={ error ? error.message: null }  
-            >
-              {categories.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
-        <Button
-          variant="outlined"
-          type="submit"
-        >
-          Track it!
-        </Button>
-      </form>
+    <SpendingForm 
+      handleSubmit={handleSubmit}
+      onSubmit={onSubmit}
+      control={control}
+      categories={categories}
+    />
       <FormControl component="fieldset">
         <FormLabel component="legend">Sort by</FormLabel>
         <RadioGroup defaultValue="created_at desc" name="sort_by" onChange={handleRadioChange}>
@@ -237,7 +193,7 @@ function Spendings(props) {
           <TableBody>
             {spendings.map((spending) => 
               <TableRow key={spending.id}>
-                <TableCell component="th" scope="row">{spending.description}</TableCell>
+                <TableCell component="th" scope="row">{spending.description}, {spending.id}</TableCell>
                 <TableCell component="th" scope="row">{spending.amount}</TableCell>
                 <TableCell component="th" scope="row">Category</TableCell>
                 <TableCell component="th" scope="row">
@@ -245,9 +201,24 @@ function Spendings(props) {
                   variant="outlined"
                   color="primary"
                   value={spending.id}
+                  onClick={handleOpen}
                   >
                     Edit
                   </Button>
+                  <SpendingEditPopUp 
+                    open={open} 
+                    handleClose={handleClose} 
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}
+                    control={control}
+                    categories={categories}
+                    spendingId={spendingId}
+                    token={token}
+                    isError={isError}
+                    setIsError={setIsError}
+                    count={count}
+                    setCount={setCount}
+                  />
                   <Button 
                   variant="outlined" 
                   color="secondary" 
