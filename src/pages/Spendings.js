@@ -58,8 +58,8 @@ function Spendings(props) {
 
   const categories = [
     { value: 'Clothes', id: 1 },
-    { value: 'Travelling', id: 2},
-    { value: 'Taxi', id: 3 },
+    { value: 'Travelling', id: 3},
+    { value: 'Taxi', id: 2 },
     { value: 'Cafe', id: 4 },
     { value: 'Shops', id: 5 },
     { value: 'Other', id: 6 },
@@ -98,7 +98,8 @@ function Spendings(props) {
           'Authorization': token,
         }
       },)
-      setSpendings(result.data.spendings);
+      console.log("Spendings", result.data.spendings.data)
+      setSpendings(result.data.spendings.data);
     };
     fetchSpendings();
   }, [count]);
@@ -122,7 +123,7 @@ function Spendings(props) {
     const fetchSortedSpendings = async () => {
       const result = await axios.get("http://localhost:3001/api/spendings", 
       config)
-      setSpendings(result.data.spendings);
+      setSpendings(result.data.spendings.data);
     };
     fetchSortedSpendings();
   }
@@ -193,9 +194,9 @@ function Spendings(props) {
           <TableBody>
             {spendings.map((spending) => 
               <TableRow key={spending.id}>
-                <TableCell component="th" scope="row">{spending.description}, {spending.id}</TableCell>
-                <TableCell component="th" scope="row">{spending.amount}</TableCell>
-                <TableCell component="th" scope="row">Category</TableCell>
+                <TableCell component="th" scope="row">{spending.attributes.description}</TableCell>
+                <TableCell component="th" scope="row">{spending.attributes.amount}</TableCell>
+                <TableCell component="th" scope="row">{spending.attributes.category.name}</TableCell>
                 <TableCell component="th" scope="row">
                   <Button
                   variant="outlined"
