@@ -44,7 +44,7 @@ function Signup() {
           validationSchema={SignUpValidationSchema}
           onSubmit={(values) => {
             console.log(values);
-            axios.post("http://localhost:3001/api/signup", {
+            axios.post("https://spend-and-track.herokuapp.com/api/signup", {
             user: {
             first_name: values.firstName,
             last_name: values.lastName,

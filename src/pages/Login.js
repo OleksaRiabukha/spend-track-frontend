@@ -41,7 +41,7 @@ function Login(props) {
         }}
         validationSchema={LogInFormValidationSchema}
         onSubmit={(values) => {
-          axios.post("http://localhost:3001/api/login", {
+          axios.post("https://spend-and-track.herokuapp.com/api/login", {
           user: {
           password: values.password,
           email: values.email
