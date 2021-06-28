@@ -83,7 +83,7 @@ function Spendings(props) {
   ];
 
   const onSubmit = (values) => {
-        axios.post("http://localhost:3001/api/spendings", {
+        axios.post("https://spend-and-track.herokuapp.com/api/spendings", {
         spending: {
         description: values.description,
         amount: values.amount,
@@ -107,7 +107,7 @@ function Spendings(props) {
 
   useEffect(() => {
     const fetchSpendings = async () => {
-      const result = await axios.get("http://localhost:3001/api/spendings", 
+      const result = await axios.get("https://spend-and-track.herokuapp.com/api/spendings", 
       {
         headers: {
           'Authorization': token,
@@ -135,7 +135,7 @@ function Spendings(props) {
       },
     }
     const fetchSortedSpendings = async () => {
-      const result = await axios.get("http://localhost:3001/api/spendings", 
+      const result = await axios.get("https://spend-and-track.herokuapp.com/api/spendings", 
       config)
       setSpendings(result.data.spendings.data);
     };
@@ -144,7 +144,7 @@ function Spendings(props) {
 
   const handleDelete = (e) => {
     let spending_id = e.currentTarget.value
-    axios.delete(`http://localhost:3001/api/spendings/${spending_id}`, 
+    axios.delete(`https://spend-and-track.herokuapp.com/api/spendings/${spending_id}`, 
     {
       headers: {
         'Authorization': token

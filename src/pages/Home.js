@@ -17,9 +17,9 @@ function Home(props) {
     variant="contained" 
     color="primary"
     component={Link}
-    to="/signup"
+    to="/spendings"
     >
-      Sign Up to Track Spendigns
+      Track your spendings!
     </Button>
   </Grid>
   )

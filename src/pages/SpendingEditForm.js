@@ -14,7 +14,7 @@ function SpendingEditForm(props) {
 
   const onSubmit = values => {
     let spendingId = props.spendingId
-    axios.put(`http://localhost:3001/api/spendings/${spendingId}`, {
+    axios.put(`https://spend-and-track.herokuapp.com/api/spendings/${spendingId}`, {
     spending: {
     description: values.description,
     amount: values.amount,
