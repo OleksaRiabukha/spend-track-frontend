@@ -15,6 +15,9 @@ import {
   FormControl,
   FormLabel,
   Radio,
+  Container,
+  Typography,
+  Grid
 } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,8 +26,25 @@ import SpendingForm from "./SpendingForm";
 import SpendingEditPopUp from "./SpendingPopUp";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
+  container: {
+    display: "flex",
+    justifyContent: "center"
+  },
+
+  enterSpending: {
+    marginTop: "50px",
+    marginBottom: "20px"
+  },
+
+  sortButton: {
+    justifyContent: "center",
+  },
+  form: {
+    marginTop: 500,
+  },
+
+  style: {
+    justifyContent: "rigth"
   },
 });
 
@@ -140,94 +160,105 @@ function Spendings(props) {
 
   return (
     <div>
-    <SpendingForm 
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-      control={control}
-      categories={categories}
-    />
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Sort by</FormLabel>
-        <RadioGroup defaultValue="created_at desc" name="sort_by" onChange={handleRadioChange}>
-          <FormControlLabel 
-            value="amount asc"
-            control={<Radio />}
-            label='By amount, from smaller to bigger'
-          />
-          <FormControlLabel 
-            value="amount desc"
-            control={<Radio />}
-            label='By amount, from bigger to smaller'
-          />
-          <FormControlLabel 
-            value="created_at desc"
-            control={<Radio />}
-            label='By date, from last to first '
-          />
-          <FormControlLabel 
-            value="created_at asc"
-            control={<Radio />}
-            label='By date, from first to last '
-          />
-        </RadioGroup>
-        <Button type="submit" variant="outlined" color="primary" onClick={handleSortTable}>Sort it!</Button>
-      </FormControl>
-      <div>
-        <h3>Cool, you have spent a total of {totalAmount} </h3>
-      </div>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table" className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Description</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {spendings.map((spending) => 
-              <TableRow key={spending.id}>
-                <TableCell component="th" scope="row">{spending.attributes.description}</TableCell>
-                <TableCell component="th" scope="row">{spending.attributes.amount}</TableCell>
-                <TableCell component="th" scope="row">{spending.attributes.category.name}</TableCell>
-                <TableCell component="th" scope="row">
-                  <Button
-                  variant="outlined"
-                  color="primary"
-                  value={spending.id}
-                  onClick={handleOpen}
-                  >
-                    Edit
-                  </Button>
-                  <SpendingEditPopUp 
-                    open={open} 
-                    handleClose={handleClose} 
-                    handleSubmit={handleSubmit}
-                    onSubmit={onSubmit}
-                    control={control}
-                    categories={categories}
-                    spendingId={spendingId}
-                    token={token}
-                    isError={isError}
-                    setIsError={setIsError}
-                    count={count}
-                    setCount={setCount}
-                  />
-                  <Button 
-                  variant="outlined" 
-                  color="secondary" 
-                  value={spending.id} 
-                  onClick={(e) => handleDelete(e)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            )}    
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={2} direction="column">
+        <Typography variant="h4" className={classes.enterSpending}>Enter new spending:</Typography>
+        <SpendingForm 
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          control={control}
+          categories={categories}
+          className={classes.form}
+        />
+          <FormControl component="fieldset">
+            <FormLabel component="legend" align="left">Sort by</FormLabel>
+            <RadioGroup defaultValue="created_at desc" name="sort_by" onChange={handleRadioChange}>
+              <FormControlLabel 
+                value="amount asc"
+                control={<Radio />}
+                label='By amount, from smaller to bigger'
+              />
+              <FormControlLabel 
+                value="amount desc"
+                control={<Radio />}
+                label='By amount, from bigger to smaller'
+              />
+              <FormControlLabel 
+                value="created_at desc"
+                control={<Radio />}
+                label='By date, from last to first '
+              />
+              <FormControlLabel 
+                value="created_at asc"
+                control={<Radio />}
+                label='By date, from first to last '
+              />
+            </RadioGroup>
+            <Button 
+            type="submit" 
+            variant="outlined" 
+            color="primary" 
+            onClick={handleSortTable} 
+            className={classes.sortButton}
+            style={{ width: "20%"}}
+            >
+              Sort it!
+            </Button>
+          </FormControl>
+          <Typography variant="h5" className={classes.style}>Cool, you have spent a total of ${totalAmount}</Typography>
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table" className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Amount</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell align="center">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {spendings.map((spending) => 
+                  <TableRow key={spending.id}>
+                    <TableCell component="th" scope="row">{spending.attributes.description}</TableCell>
+                    <TableCell component="th" scope="row">{spending.attributes.amount}</TableCell>
+                    <TableCell component="th" scope="row">{spending.attributes.category.name}</TableCell>
+                    <TableCell component="th" scope="row" align="center">
+                      <Button
+                      variant="outlined"
+                      color="primary"
+                      value={spending.id}
+                      onClick={handleOpen}
+                      >
+                        Edit
+                      </Button>
+                      <SpendingEditPopUp 
+                        open={open} 
+                        handleClose={handleClose} 
+                        handleSubmit={handleSubmit}
+                        onSubmit={onSubmit}
+                        control={control}
+                        categories={categories}
+                        spendingId={spendingId}
+                        token={token}
+                        isError={isError}
+                        setIsError={setIsError}
+                        count={count}
+                        setCount={setCount}
+                      />
+                      <Button 
+                      variant="outlined" 
+                      color="secondary" 
+                      value={spending.id} 
+                      onClick={(e) => handleDelete(e)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )}    
+              </TableBody>
+            </Table>
+          </TableContainer>
+      </Grid>
     </div>
   );
 };

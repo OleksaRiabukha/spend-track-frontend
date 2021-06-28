@@ -56,6 +56,7 @@ function SpendingForm(props) {
               value={value}
               onChange={onChange}
               error={!!error}
+              style={{ width: "20%"}}
               helperText={ error ? error.message: null }  
             >
               {props.categories.map((option) => (
@@ -67,8 +68,10 @@ function SpendingForm(props) {
           )}
         />
         <Button
-          variant="outlined"
+          variant="contained"
+          color="primary"
           type="submit"
+          size="large"
         >
           Track it!
         </Button>

@@ -1,7 +1,28 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+
+import { 
+ Typography,
+ Grid, 
+ Button} from "@material-ui/core";
 
 function Home(props) {
-  return <div>Home Page</div>;
+  return (
+  <Grid >
+    <Typography color="textPrimary" gutterBottom variant="h2" align="center"> 
+      Spend money and track expenses!
+    </Typography>
+    <Button 
+    size="large" 
+    variant="contained" 
+    color="primary"
+    component={Link}
+    to="/signup"
+    >
+      Sign Up to Track Spendigns
+    </Button>
+  </Grid>
+  )
 }
 
 export default Home;
