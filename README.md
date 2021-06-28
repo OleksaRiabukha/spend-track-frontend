@@ -6,7 +6,7 @@ Frontend part for spendings tracking app with ROR backend.
 ## Test
 - the app is deployed on [heroku](https://spend-and-track-fe.herokuapp.com/) 
 - the backend part is deployed on [heroku](https://spend-and-track.herokuapp.com) in API mode 
-- the backend [repository](httpshttps://github.com/OleksaRiabukha/spend-track-backend)
+- the backend [repository](https://github.com/OleksaRiabukha/spend-track-backend)
 
 ## Run locally 
 
