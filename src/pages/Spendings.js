@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/auth";
-import { useForm, ErrorMessage, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import {
-  TextField,
   Button,
-  MenuItem,
   TableContainer,
   Table,
   TableHead,
@@ -17,8 +15,6 @@ import {
   FormControl,
   FormLabel,
   Radio,
-  Dialog,
-  Container
 } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,9 +42,10 @@ function Spendings(props) {
 
   const [open, setOpen ] = useState(false);
 
+  const [totalAmount, setTotalAmount] = useState(null);
+
   const handleOpen = (e) => {
     setSpendingId(e.currentTarget.value);
-    console.log(spendingId);
     setOpen(true)
   };
     
@@ -81,11 +78,9 @@ function Spendings(props) {
           setCount(count + 1);
         } else {
           setIsError(true);
-          console.log(isError);
         }
       }).catch(e => {
         setIsError(true);
-        console.log(isError);
       });
   };
   const classes = useStyles();
@@ -98,7 +93,7 @@ function Spendings(props) {
           'Authorization': token,
         }
       },)
-      console.log("Spendings", result.data.spendings.data)
+      setTotalAmount(result.data.total_amount);
       setSpendings(result.data.spendings.data);
     };
     fetchSpendings();
@@ -110,7 +105,6 @@ function Spendings(props) {
 
   const handleRadioChange = (event) => {
     setSort(event.target.value);
-    console.log(event.target.value)
   }
 
   const handleSortTable = (e) => {
@@ -129,7 +123,6 @@ function Spendings(props) {
   }
 
   const handleDelete = (e) => {
-    console.log(e.currentTarget.value)
     let spending_id = e.currentTarget.value
     axios.delete(`http://localhost:3001/api/spendings/${spending_id}`, 
     {
@@ -138,12 +131,10 @@ function Spendings(props) {
       }
     },).then(result => {
       if (result.status === 204) {
-        console.log(result);
         setCount(count +1);
       }
     }).catch(e => {
       setIsError(true);
-      console.log(e)
     })
   };
 
@@ -181,6 +172,9 @@ function Spendings(props) {
         </RadioGroup>
         <Button type="submit" variant="outlined" color="primary" onClick={handleSortTable}>Sort it!</Button>
       </FormControl>
+      <div>
+        <h3>Cool, you have spent a total of {totalAmount} </h3>
+      </div>
       <TableContainer component={Paper}>
         <Table aria-label="simple table" className={classes.table}>
           <TableHead>

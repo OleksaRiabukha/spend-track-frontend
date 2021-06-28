@@ -29,7 +29,6 @@ function Login(props) {
       }}
       validationSchema={LogInFormValidationSchema}
       onSubmit={(values) => {
-        console.log(values);
         axios.post("http://localhost:3001/api/login", {
         user: {
         password: values.password,
@@ -38,9 +37,6 @@ function Login(props) {
       }).then(result => {
         if (result.status === 200) {
           setAuthTokens(result.data);
-          console.log(localStorage.getItem('tokens'));
-          // console.log(result);
-          // console.log(result.data);
           setLoggedIn(true);
         } else {
           setIsError(true);

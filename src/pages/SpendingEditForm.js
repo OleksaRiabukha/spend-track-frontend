@@ -1,25 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/auth";
-import { useForm, ErrorMessage, Controller } from "react-hook-form";
+import React from "react";
+import { Controller } from "react-hook-form";
 
 import {
   TextField,
   Button,
   MenuItem,
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Radio,
 } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 
@@ -27,9 +13,7 @@ function SpendingEditForm(props) {
 
 
   const onSubmit = values => {
-    console.log(values);
     let spendingId = props.spendingId
-    console.log(spendingId);
     axios.put(`http://localhost:3001/api/spendings/${spendingId}`, {
     spending: {
     description: values.description,
@@ -43,10 +27,8 @@ function SpendingEditForm(props) {
   ).then(result => {
     if (result.status === 200) {
       props.setCount(props.count + 1);
-      console.log(result);
     } else {
       props.setIsError(true);
-      console.log(props.isError);
     }
   }).catch(e => {
     props.setIsError(true);

@@ -1,34 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/auth";
-import { useForm, ErrorMessage, Controller } from "react-hook-form";
+import React, { useState } from "react";
+import { Controller } from "react-hook-form";
 
 import {
   TextField,
   Button,
   MenuItem,
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Radio,
 } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-
 
 function SpendingForm(props) {
-
-  const [ spendingID, setSpendingId] = useState(null);
-
-  
-
   return (
     <div>
       <form onSubmit={props.handleSubmit(props.onSubmit)}>
